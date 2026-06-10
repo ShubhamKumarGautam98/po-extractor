@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+﻿import { useState, useRef } from "react";
 
 const S = {
   // Layout
@@ -103,7 +103,7 @@ export default function Upload({ onUpload, loading }) {
           </div>
           <span style={S.navName}>PO Extractor</span>
         </div>
-        <div style={S.navPill}>⚡ n8n + Claude AI</div>
+        <div style={S.navPill}>⚡ n8n + AI Extraction</div>
       </div>
 
       {/* STEPS */}
@@ -126,7 +126,7 @@ export default function Upload({ onUpload, loading }) {
             <div style={S.loadSub}>{selectedFile?.name || "Your file"} — this usually takes 10–15 seconds</div>
             <div style={S.loadSteps}>
               <LoadingStep label="PDF received by n8n webhook" state="done" />
-              <LoadingStep label="Claude AI reading the document..." state="active" />
+              <LoadingStep label="AI reading the document..." state="active" />
               <LoadingStep label="Applying CSV transformation rules" state="pending" />
               <LoadingStep label="Validating extracted fields" state="pending" />
             </div>

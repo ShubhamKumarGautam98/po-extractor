@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 
 const C = {
   blue50: "#EFF6FF", blue100: "#BFDBFE", blue700: "#1D4ED8", blue600: "#1D6FE8",
@@ -18,7 +18,7 @@ function Nav() {
         </div>
         <span style={{ fontSize: "15px", fontWeight: "500", color: C.slate900 }}>PO Extractor</span>
       </div>
-      <div style={{ fontSize: "11px", padding: "3px 10px", background: C.blue50, color: C.blue700, borderRadius: "20px", fontWeight: "500", border: `1px solid ${C.blue100}` }}>⚡ n8n + Claude AI</div>
+      <div style={{ fontSize: "11px", padding: "3px 10px", background: C.blue50, color: C.blue700, borderRadius: "20px", fontWeight: "500", border: `1px solid ${C.blue100}` }}>⚡ n8n + AI Extraction</div>
     </div>
   );
 }
