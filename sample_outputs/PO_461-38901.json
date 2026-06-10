@@ -1,0 +1,76 @@
+{
+  "status": "artifact_ready",
+  "purchase_order": {
+    "source_file": "unknown.pdf",
+    "header": {
+      "action": "NEW",
+      "customer_code": "RAJ",
+      "po_num": "461-38901",
+      "div_code": "RJI"
+    },
+    "pr": {
+      "issue_date": "14-APR-2026",
+      "currency": "USD",
+      "incoterm_code": "FOB",
+      "incoterm_text": "FREE ON BOARD",
+      "season": "AW26"
+    },
+    "suppliers": [
+      {
+        "supplier_id": "1",
+        "vendor_code": "RAJLTD",
+        "vendor_name": "Raj Limited",
+        "vendor_currency": "USD",
+        "vendor_inc_code": "FOB",
+        "vendor_incoterm": "FREE ON BOARD"
+      }
+    ],
+    "items": [],
+    "shipments": [
+      {
+        "shipment_id": "1",
+        "port_of_loading": "CGP",
+        "port_of_discharge": "SOU",
+        "final_destination": "UKG"
+      }
+    ],
+    "prepacks": [
+      {
+        "prepack_id": "1",
+        "details": [
+          {
+            "id": "1",
+            "size_id": "10",
+            "pack_color": "RATIO PACK A"
+          },
+          {
+            "id": "2",
+            "size_id": "12",
+            "pack_color": "RATIO PACK A"
+          },
+          {
+            "id": "3",
+            "size_id": "8",
+            "pack_color": "RATIO PACK A"
+          }
+        ]
+      },
+      {
+        "prepack_id": "2",
+        "details": [
+          {
+            "id": "1",
+            "size_id": "14",
+            "pack_color": "RATIO PACK B"
+          },
+          {
+            "id": "2",
+            "size_id": "16",
+            "pack_color": "RATIO PACK B"
+          }
+        ]
+      }
+    ]
+  },
+  "issues": []
+}

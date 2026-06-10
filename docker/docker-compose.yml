@@ -1,0 +1,51 @@
+version: "3.8"
+
+services:
+
+  # ── n8n workflow engine ───────────────────────────────────────────────────
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: po-extractor-n8n
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_BASIC_AUTH_ACTIVE=false
+      - N8N_HOST=localhost
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - WEBHOOK_URL=http://localhost:5678
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - N8N_USER_FOLDER=/home/node/.n8n
+      - NODE_FUNCTION_ALLOW_EXTERNAL=@anthropic-ai/sdk
+      - NODE_FUNCTION_ALLOW_BUILTIN=fs,path,os
+      - N8N_RUNNERS_ALLOW_ENV_ACCESS_TOKEN=true
+      - N8N_TASK_RUNNER_ENABLED=false
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ../config:/data/config:ro
+    networks:
+      - po-network
+
+  # ── React frontend ────────────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: ../docker/Dockerfile.frontend
+    container_name: po-extractor-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    environment:
+      - VITE_N8N_WEBHOOK_URL=http://localhost:5678/webhook/po-extract
+    depends_on:
+      - n8n
+    networks:
+      - po-network
+
+volumes:
+  n8n_data:
+
+networks:
+  po-network:
+    driver: bridge

@@ -1,0 +1,170 @@
+﻿{
+  "name": "PO Extractor Pipeline",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "po-extract",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const extractionPrompt = \"You are a Purchase Order data extraction specialist. Extract ONLY facts explicitly printed on the document. Do NOT invent values.\\n\\nReturn a single JSON object with this structure:\\n{\\n  \\\"document_brand\\\": \\\"\\\",\\n  \\\"po_number\\\": \\\"\\\",\\n  \\\"vendor_no\\\": \\\"\\\",\\n  \\\"supplier_no\\\": \\\"\\\",\\n  \\\"factory_no\\\": \\\"\\\",\\n  \\\"style_no\\\": \\\"\\\",\\n  \\\"product_description\\\": \\\"\\\",\\n  \\\"season\\\": \\\"\\\",\\n  \\\"colour\\\": \\\"\\\",\\n  \\\"currency\\\": \\\"\\\",\\n  \\\"country_of_origin\\\": \\\"\\\",\\n  \\\"port_of_departure\\\": \\\"\\\",\\n  \\\"lading_port\\\": \\\"\\\",\\n  \\\"destination_location\\\": \\\"\\\",\\n  \\\"order_date\\\": \\\"\\\",\\n  \\\"payment_terms\\\": \\\"\\\",\\n  \\\"incoterm\\\": \\\"\\\",\\n  \\\"items\\\": [],\\n  \\\"deliveries\\\": [],\\n  \\\"prepacks\\\": [],\\n  \\\"ratio_packs\\\": [],\\n  \\\"missing_fields\\\": []\\n}\\n\\nRULES:\\n1. document_brand = company name at top of document (e.g. BrightKids, ThreadHaven, Raj International Sourcing)\\n2. vendor_no = field labelled Vendor on document\\n3. supplier_no = field labelled Supplier No\\n4. Multiple deliveries = populate deliveries array, each with shipment_date and items array\\n5. Each item in deliveries.items must have: size, barcode, cost_price, retail_price, order_qty, cartons\\n6. Prepacks = populate prepacks array with prepack_id and sizes array\\n7. Ratio packs (Pack A/B) = populate ratio_packs array with pack_name, itf_barcode, qty_of_packs, sizes array\\n8. Missing fields = leave as empty string and add field name to missing_fields array\\n9. Return ONLY the JSON object, no markdown, no explanation\\n10. All numbers as strings exactly as printed\";\n\nconst items = $input.all();\nconst results = [];\n\nfor (const item of items) {\n  const pdfBase64 = item.json.body?.pdf_base64 || item.json.pdf_base64;\n  const filename = item.json.body?.filename || item.json.filename || 'unknown.pdf';\n\n  if (!pdfBase64) {\n    results.push({ json: { success: false, filename, error: 'No PDF data received' } });\n    continue;\n  }\n\n  results.push({\n    json: {\n      filename,\n      requestBody: {\n        model: 'claude-sonnet-4-5',\n        max_tokens: 4000,\n        messages: [{\n          role: 'user',\n          content: [\n            { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: pdfBase64 } },\n            { type: 'text', text: extractionPrompt }\n          ]\n        }]\n      }\n    }\n  });\n}\n\nreturn results;"
+      },
+      "id": "prepare-node",
+      "name": "Prepare Request",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        460,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "YOUR_API_KEY_HERE"
+            },
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.requestBody }}",
+        "options": {}
+      },
+      "id": "http-node",
+      "name": "Call Claude API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        680,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const RULES = [\n  {rule_type:'source_detection',source_value:'BrightKids',target_field:'header.customer_code',target_value:'BRIGHT'},\n  {rule_type:'source_detection',source_value:'ThreadHaven',target_field:'header.customer_code',target_value:'GEORGE'},\n  {rule_type:'source_detection',source_value:'Raj International Sourcing',target_field:'header.customer_code',target_value:'RAJ'},\n  {rule_type:'source_detection',source_value:'Tesco',target_field:'header.customer_code',target_value:'TESCO'},\n  {rule_type:'header_default',source_value:'*',target_field:'header.action',target_value:'NEW'},\n  {rule_type:'division_lookup',source_value:'BRIGHT',target_field:'header.div_code',target_value:'BKD'},\n  {rule_type:'division_lookup',source_value:'GEORGE',target_field:'header.div_code',target_value:'KAE'},\n  {rule_type:'division_lookup',source_value:'RAJ',target_field:'header.div_code',target_value:'RJI'},\n  {rule_type:'division_lookup',source_value:'TESCO',target_field:'header.div_code',target_value:'KAE'},\n  {rule_type:'vendor_lookup',source_value:'07821490',target_field:'suppliers.vendor_code',target_value:'BKDS01'},\n  {rule_type:'vendor_lookup',source_value:'07821490',target_field:'suppliers.vendor_name',target_value:'BrightKids Sourcing Ltd'},\n  {rule_type:'vendor_lookup',source_value:'07821490',target_field:'suppliers.vendor_currency',target_value:'USD'},\n  {rule_type:'vendor_lookup',source_value:'07821490',target_field:'suppliers.vendor_inc_code',target_value:'FOB'},\n  {rule_type:'vendor_lookup',source_value:'07821490',target_field:'suppliers.vendor_incoterm',target_value:'FREE ON BOARD'},\n  {rule_type:'vendor_lookup',source_value:'05344742',target_field:'suppliers.vendor_code',target_value:'THVN42'},\n  {rule_type:'vendor_lookup',source_value:'05344742',target_field:'suppliers.vendor_name',target_value:'ThreadHaven Mills'},\n  {rule_type:'vendor_lookup',source_value:'05344742',target_field:'suppliers.vendor_currency',target_value:'USD'},\n  {rule_type:'vendor_lookup',source_value:'05344742',target_field:'suppliers.vendor_inc_code',target_value:'FOB'},\n  {rule_type:'vendor_lookup',source_value:'05344742',target_field:'suppliers.vendor_incoterm',target_value:'FREE ON BOARD'},\n  {rule_type:'vendor_lookup',source_value:'05344746',target_field:'suppliers.vendor_code',target_value:'THVN46'},\n  {rule_type:'vendor_lookup',source_value:'05344746',target_field:'suppliers.vendor_name',target_value:'ThreadHaven Knits'},\n  {rule_type:'vendor_lookup',source_value:'05344746',target_field:'suppliers.vendor_currency',target_value:'USD'},\n  {rule_type:'vendor_lookup',source_value:'05344746',target_field:'suppliers.vendor_inc_code',target_value:'FOB'},\n  {rule_type:'vendor_lookup',source_value:'05344746',target_field:'suppliers.vendor_incoterm',target_value:'FREE ON BOARD'},\n  {rule_type:'vendor_lookup',source_value:'1007679',target_field:'suppliers.vendor_code',target_value:'RAJLTD'},\n  {rule_type:'vendor_lookup',source_value:'1007679',target_field:'suppliers.vendor_name',target_value:'Raj Limited'},\n  {rule_type:'vendor_lookup',source_value:'1007679',target_field:'suppliers.vendor_currency',target_value:'USD'},\n  {rule_type:'vendor_lookup',source_value:'1007679',target_field:'suppliers.vendor_inc_code',target_value:'FOB'},\n  {rule_type:'vendor_lookup',source_value:'1007679',target_field:'suppliers.vendor_incoterm',target_value:'FREE ON BOARD'},\n  {rule_type:'vendor_lookup',source_value:'1008260',target_field:'suppliers.vendor_code',target_value:'CENPTE'},\n  {rule_type:'vendor_lookup',source_value:'1008260',target_field:'suppliers.vendor_name',target_value:'CENPTE'},\n  {rule_type:'vendor_lookup',source_value:'1008260',target_field:'suppliers.vendor_currency',target_value:'USD'},\n  {rule_type:'vendor_lookup',source_value:'1008260',target_field:'suppliers.vendor_inc_code',target_value:'FOB'},\n  {rule_type:'vendor_lookup',source_value:'1008260',target_field:'suppliers.vendor_incoterm',target_value:'FREE ON BOARD'},\n  {rule_type:'incoterm_lookup',source_value:'FOB',target_field:'pr.incoterm_code',target_value:'FOB'},\n  {rule_type:'incoterm_lookup',source_value:'FOB',target_field:'pr.incoterm_text',target_value:'FREE ON BOARD'},\n  {rule_type:'country_lookup',source_value:'Bangladesh',target_field:'items.country_of_origin',target_value:'BGD'},\n  {rule_type:'country_lookup',source_value:'China',target_field:'items.country_of_origin',target_value:'CHN'},\n  {rule_type:'port_lookup',source_value:'CHITTAGONG',target_field:'shipments.port_of_loading',target_value:'CGP'},\n  {rule_type:'port_lookup',source_value:'Chittagong - Bangladesh',target_field:'shipments.port_of_loading',target_value:'CGP'},\n  {rule_type:'port_lookup',source_value:'SHANDONG-QINGDAO',target_field:'shipments.port_of_loading',target_value:'TAO'},\n  {rule_type:'destination_lookup',source_value:'United Kingdom',target_field:'shipments.port_of_discharge',target_value:'SOU'},\n  {rule_type:'destination_lookup',source_value:'United Kingdom',target_field:'shipments.final_destination',target_value:'UKG'},\n  {rule_type:'season_lookup',source_value:'SS27',target_field:'pr.season',target_value:'SS27'},\n  {rule_type:'season_lookup',source_value:'AW26',target_field:'pr.season',target_value:'AW26'},\n  {rule_type:'season_lookup',source_value:'AW',target_field:'pr.season',target_value:'AW26'},\n  {rule_type:'factory_lookup',source_value:'41098223',target_field:'items.factory_id',target_value:'FCTBD1'},\n  {rule_type:'factory_lookup',source_value:'36229061',target_field:'items.factory_id',target_value:'FCTCN1'},\n  {rule_type:'factory_lookup',source_value:'36229609',target_field:'items.factory_id',target_value:'FCTCN2'}\n];\n\nfunction applyLookup(ruleType, sourceValue, rules) {\n  const result = {};\n  rules.filter(r => r.rule_type === ruleType && r.source_value.toLowerCase() === (sourceValue || '').toLowerCase())\n    .forEach(rule => { result[rule.target_field.split('.').pop()] = rule.target_value; });\n  return result;\n}\n\nfunction detectCustomer(facts, rules) {\n  const brand = (facts.document_brand || '').toLowerCase();\n  for (const rule of rules.filter(r => r.rule_type === 'source_detection')) {\n    if (brand.includes(rule.source_value.toLowerCase())) return rule.target_value;\n  }\n  return null;\n}\n\nconst results = [];\nfor (const item of $input.all()) {\n  try {\n    const filename = item.json.filename || 'unknown.pdf';\n    const content = item.json.content || [];\n    const rawText = content.filter(b => b.type === 'text').map(b => b.text).join('');\n    const cleanJson = rawText.replace(/```json/g, '').replace(/```/g, '').trim();\n    const facts = JSON.parse(cleanJson);\n\n    const customerCode = detectCustomer(facts, RULES);\n    const headerDefaults = {};\n    RULES.filter(r => r.rule_type === 'header_default').forEach(r => { headerDefaults[r.target_field.replace('header.','')] = r.target_value; });\n    const divLookup = applyLookup('division_lookup', customerCode, RULES);\n    const header = { action: headerDefaults.action || 'NEW', customer_code: customerCode || '', po_num: facts.po_number || '', div_code: divLookup.div_code || '' };\n    const seasonLookup = applyLookup('season_lookup', facts.season || '', RULES);\n    const incotermLookup = applyLookup('incoterm_lookup', 'FOB', RULES);\n    const pr = { issue_date: facts.order_date || '', currency: facts.currency || 'USD', incoterm_code: incotermLookup.incoterm_code || 'FOB', incoterm_text: incotermLookup.incoterm_text || 'FREE ON BOARD', season: seasonLookup.season || facts.season || '' };\n    const vendorData = Object.keys(applyLookup('vendor_lookup', facts.vendor_no, RULES)).length > 0 ? applyLookup('vendor_lookup', facts.vendor_no, RULES) : applyLookup('vendor_lookup', facts.supplier_no, RULES);\n    const suppliers = [{ supplier_id: '1', vendor_code: vendorData.vendor_code || '', vendor_name: vendorData.vendor_name || '', vendor_currency: vendorData.vendor_currency || '', vendor_inc_code: vendorData.vendor_inc_code || '', vendor_incoterm: vendorData.vendor_incoterm || '' }];\n    const countryLookup = applyLookup('country_lookup', facts.country_of_origin, RULES);\n    const factoryLookup = applyLookup('factory_lookup', facts.factory_no, RULES);\n    const colour = (facts.colour || '').toUpperCase();\n    const countryCode = countryLookup.country_of_origin || facts.country_of_origin || '';\n    const factoryId = factoryLookup.factory_id || facts.factory_no || '';\n    const items = [];\n    let itemId = 1;\n    if (facts.deliveries && facts.deliveries.length > 0) {\n      for (const delivery of facts.deliveries) {\n        for (const it of (delivery.items || [])) {\n          items.push({ item_id: String(itemId++), supplier_id: '1', style_no: facts.style_no || '', shipment_id: header.po_num, country_of_origin: countryCode, price: it.cost_price || '', factory_id: factoryId, color: colour, size_id: it.size || '' });\n        }\n      }\n    } else if (facts.items && facts.items.length > 0) {\n      for (const it of facts.items) {\n        items.push({ item_id: String(itemId++), supplier_id: '1', style_no: facts.style_no || '', shipment_id: header.po_num, country_of_origin: countryCode, price: it.cost_price || '', factory_id: factoryId, color: colour, size_id: it.size || '' });\n      }\n    }\n    const portRaw = facts.port_of_departure || facts.lading_port || '';\n    const portLookup = applyLookup('port_lookup', portRaw, RULES);\n    const destLookup = applyLookup('destination_lookup', facts.destination_location || '', RULES);\n    const shipments = facts.deliveries && facts.deliveries.length > 0\n      ? facts.deliveries.map((d, i) => ({ shipment_id: String(i+1), port_of_loading: portLookup.port_of_loading || portRaw, port_of_discharge: destLookup.port_of_discharge || '', final_destination: destLookup.final_destination || '' }))\n      : [{ shipment_id: '1', port_of_loading: portLookup.port_of_loading || portRaw, port_of_discharge: destLookup.port_of_discharge || '', final_destination: destLookup.final_destination || '' }];\n    const prepacks = (facts.prepacks && facts.prepacks.length > 0)\n      ? facts.prepacks.map((p, i) => ({ prepack_id: String(i+1), details: (p.sizes||[]).map((s,j) => ({ id: String(j+1), size_id: s.size||'', pack_color: String(i+1) })) }))\n      : (facts.ratio_packs && facts.ratio_packs.length > 0)\n        ? facts.ratio_packs.map((p, i) => ({ prepack_id: String(i+1), details: (p.sizes||[]).map((s,j) => ({ id: String(j+1), size_id: s.size||'', pack_color: p.pack_name||'' })) }))\n        : [];\n\n    results.push({ json: { success: true, filename, purchase_order: { source_file: filename, header, pr, suppliers, items, shipments, prepacks } } });\n  } catch(error) {\n    results.push({ json: { success: false, filename: item.json.filename || 'unknown', error: error.message, purchase_order: null } });\n  }\n}\nreturn results;"
+      },
+      "id": "transform-node",
+      "name": "Parse + Transform",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        900,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const required = {\n  header: ['action','customer_code','po_num','div_code'],\n  pr: ['currency','incoterm_code','incoterm_text','season'],\n  suppliers: ['vendor_code','vendor_name','vendor_currency','vendor_inc_code','vendor_incoterm'],\n  items: ['style_no','country_of_origin','price','factory_id','color','size_id'],\n  shipments: ['port_of_loading','port_of_discharge','final_destination']\n};\nfunction validate(transformResult) {\n  if (!transformResult.success || !transformResult.purchase_order) {\n    return { status: 'failed', purchase_order: null, issues: [{ section: 'pipeline', field: 'transformation', message: transformResult.error || 'Transformation failed' }] };\n  }\n  const po = transformResult.purchase_order;\n  const issues = [];\n  for (const f of required.header) { if (!po.header?.[f]) issues.push({ section: 'header', field: f, message: `header.${f} is missing` }); }\n  for (const f of required.pr) { if (!po.pr?.[f]) issues.push({ section: 'pr', field: f, message: `pr.${f} is missing` }); }\n  (po.suppliers||[]).forEach((s,i) => required.suppliers.forEach(f => { if (!s[f]) issues.push({ section: 'suppliers', field: f, message: `suppliers[${i}].${f} is missing` }); }));\n  (po.items||[]).forEach((s,i) => required.items.forEach(f => { if (!s[f]) issues.push({ section: 'items', field: f, message: `items[${i}].${f} is missing` }); }));\n  (po.shipments||[]).forEach((s,i) => required.shipments.forEach(f => { if (!s[f]) issues.push({ section: 'shipments', field: f, message: `shipments[${i}].${f} is missing` }); }));\n  return { status: issues.length === 0 ? 'artifact_ready' : 'needs_review', purchase_order: po, issues };\n}\nconst results = [];\nfor (const item of $input.all()) {\n  results.push({ json: validate(item.json) });\n}\nreturn results;"
+      },
+      "id": "validator-node",
+      "name": "Validator",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "id": "respond-node",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1340,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Prepare Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Request": {
+      "main": [
+        [
+          {
+            "node": "Call Claude API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call Claude API": {
+      "main": [
+        [
+          {
+            "node": "Parse + Transform",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse + Transform": {
+      "main": [
+        [
+          {
+            "node": "Validator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validator": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
