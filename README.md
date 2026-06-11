@@ -56,6 +56,14 @@ Visit http://localhost:3001
 3. Review and edit the extracted fields
 4. Click **Export JSON** to download the structured output
 
+## Screenshots
+
+### Upload Screen
+![Upload Screen](screenshots/01_upload.png)
+
+### Review Screen — BrightKids PO 2450187
+![Review Screen](screenshots/03_review.png)
+
 ---
 
 ## Sample Outputs
