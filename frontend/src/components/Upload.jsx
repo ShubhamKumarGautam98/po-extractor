@@ -1,7 +1,6 @@
 ﻿import { useState, useRef } from "react";
 
 const S = {
-  // Layout
   page: { minHeight: "100vh", background: "#F8FAFC", display: "flex", flexDirection: "column" },
   nav: { background: "#FFFFFF", borderBottom: "1px solid #E2E8F0", height: "52px", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 24px", flexShrink: 0 },
   navLeft: { display: "flex", alignItems: "center", gap: "10px" },
@@ -26,7 +25,6 @@ const S = {
   formats: { display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", marginTop: "14px" },
   formatTag: { fontSize: "11px", color: "#64748B", background: "#F1F5F9", padding: "3px 8px", borderRadius: "4px" },
   error: { fontSize: "12px", color: "#DC2626", background: "#FEF2F2", border: "1px solid #FECACA", borderRadius: "6px", padding: "8px 12px", marginTop: "12px" },
-  // Loading
   loadingCard: { background: "#FFFFFF", border: "1px solid #E2E8F0", borderRadius: "12px", padding: "40px 32px", width: "100%", maxWidth: "440px", textAlign: "center" },
   spinner: { width: "48px", height: "48px", border: "3px solid #EFF6FF", borderTop: "3px solid #1D6FE8", borderRadius: "50%", margin: "0 auto 20px", animation: "spin 0.8s linear infinite" },
   loadTitle: { fontSize: "16px", fontWeight: "500", color: "#0F172A", marginBottom: "6px" },
@@ -38,11 +36,10 @@ function Step({ num, label, state }) {
   const isActive = state === "active";
   const isDone = state === "done";
   const color = isDone ? "#16A34A" : isActive ? "#1D6FE8" : "#94A3B8";
-  const borderColor = color;
   const circleBg = isDone ? "#DCFCE7" : "transparent";
   return (
     <div style={{ display: "flex", alignItems: "center", gap: "7px", padding: "12px 16px 12px 0", fontSize: "12px", color, position: "relative", whiteSpace: "nowrap", borderBottom: isActive ? "2px solid #1D6FE8" : "2px solid transparent", marginBottom: "-1px" }}>
-      <div style={{ width: "18px", height: "18px", borderRadius: "50%", border: `1.5px solid ${borderColor}`, background: circleBg, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", fontWeight: "500", color, flexShrink: 0 }}>
+      <div style={{ width: "18px", height: "18px", borderRadius: "50%", border: `1.5px solid ${color}`, background: circleBg, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", fontWeight: "500", color, flexShrink: 0 }}>
         {isDone ? "✓" : num}
       </div>
       {label}
@@ -93,9 +90,8 @@ export default function Upload({ onUpload, loading }) {
 
   return (
     <div style={S.page}>
-      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      <style>{"@keyframes spin { to { transform: rotate(360deg); } }"}</style>
 
-      {/* NAV */}
       <div style={S.nav}>
         <div style={S.navLeft}>
           <div style={S.navIcon}>
@@ -106,7 +102,6 @@ export default function Upload({ onUpload, loading }) {
         <div style={S.navPill}>⚡ n8n + AI Extraction</div>
       </div>
 
-      {/* STEPS */}
       <div style={S.steps}>
         <Step num="1" label="Upload" state={loading ? "done" : "active"} />
         <span style={{ color: "#CBD5E1", fontSize: "11px", margin: "0 4px 0 0" }}>›</span>
@@ -117,7 +112,6 @@ export default function Upload({ onUpload, loading }) {
         <Step num="4" label="Export" state="pending" />
       </div>
 
-      {/* BODY */}
       <div style={S.body}>
         {loading ? (
           <div style={S.loadingCard}>
@@ -162,11 +156,7 @@ export default function Upload({ onUpload, loading }) {
 
             {error && <div style={S.error}>{error}</div>}
 
-            <button
-              onClick={handleSubmit}
-              disabled={!selectedFile}
-              style={selectedFile ? S.btnPrimary : S.btnDisabled}
-            >
+            <button onClick={handleSubmit} disabled={!selectedFile} style={selectedFile ? S.btnPrimary : S.btnDisabled}>
               <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
               Extract PO data
             </button>

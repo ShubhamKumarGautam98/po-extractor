@@ -18,7 +18,7 @@ function Nav() {
         </div>
         <span style={{ fontSize: "15px", fontWeight: "500", color: C.slate900 }}>PO Extractor</span>
       </div>
-      <div style={{ fontSize: "11px", padding: "3px 10px", background: C.blue50, color: C.blue700, borderRadius: "20px", fontWeight: "500", border: `1px solid ${C.blue100}` }}>⚡ n8n + AI Extraction</div>
+      <div style={{ fontSize: "11px", padding: "3px 10px", background: C.blue50, color: C.blue700, borderRadius: "20px", fontWeight: "500", border: `1px solid ${C.blue100}` }}>n8n + AI Extraction</div>
     </div>
   );
 }
@@ -27,8 +27,8 @@ function Steps() {
   return (
     <div style={{ background: C.white, borderBottom: `1px solid ${C.slate200}`, padding: "0 24px", display: "flex", alignItems: "center", flexShrink: 0 }}>
       {[
-        { num: "✓", label: "Upload", done: true },
-        { num: "✓", label: "Extract", done: true },
+        { num: "OK", label: "Upload", done: true },
+        { num: "OK", label: "Extract", done: true },
         { num: "3", label: "Review", active: true },
         { num: "4", label: "Export", pending: true },
       ].map((s, i) => (
@@ -39,7 +39,7 @@ function Steps() {
             </div>
             {s.label}
           </div>
-          {i < 3 && <span style={{ color: C.slate300, fontSize: "11px", marginRight: "16px" }}>›</span>}
+          {i < 3 && <span style={{ color: C.slate300, fontSize: "11px", marginRight: "16px" }}>{">"}</span>}
         </div>
       ))}
     </div>
@@ -48,23 +48,22 @@ function Steps() {
 
 function StatusBadge({ status }) {
   const cfg = {
-    artifact_ready: { bg: C.green50, color: C.green800, border: C.green200, icon: "✓", label: "Artifact ready" },
-    needs_review: { bg: C.amber50, color: C.amber800, border: C.amber200, icon: "⚠", label: "Needs review" },
-    failed: { bg: C.red50, color: C.red700, border: C.red200, icon: "✕", label: "Failed" },
+    artifact_ready: { bg: C.green50, color: C.green800, border: C.green200, label: "Artifact ready" },
+    needs_review: { bg: C.amber50, color: C.amber800, border: C.amber200, label: "Needs review" },
+    failed: { bg: C.red50, color: C.red700, border: C.red200, label: "Failed" },
   };
   const s = cfg[status] || cfg.needs_review;
   return (
     <div style={{ display: "inline-flex", alignItems: "center", gap: "5px", padding: "5px 12px", background: s.bg, color: s.color, border: `1px solid ${s.border}`, borderRadius: "20px", fontSize: "11px", fontWeight: "500", whiteSpace: "nowrap" }}>
-      {s.icon} {s.label}
+      {s.label}
     </div>
   );
 }
 
-function SectionCard({ icon, title, children }) {
+function SectionCard({ title, children }) {
   return (
     <div style={{ background: C.white, border: `1px solid ${C.slate200}`, borderRadius: "10px", marginBottom: "10px", overflow: "hidden" }}>
       <div style={{ padding: "9px 14px", background: C.blue50, borderBottom: `1px solid ${C.blue100}`, display: "flex", alignItems: "center", gap: "8px" }}>
-        <span style={{ fontSize: "13px" }}>{icon}</span>
         <span style={{ fontSize: "11px", fontWeight: "500", color: C.blue700, textTransform: "uppercase", letterSpacing: ".06em" }}>{title}</span>
       </div>
       {children}
@@ -79,7 +78,7 @@ function Field({ label, value, onChange, missing }) {
       <input
         type="text"
         value={value || ""}
-        placeholder={missing ? "Missing — enter manually" : ""}
+        placeholder={missing ? "Missing - enter manually" : ""}
         onChange={(e) => onChange(e.target.value)}
         style={{ width: "100%", padding: "7px 10px", border: `1px solid ${missing ? "#F59E0B" : C.blue100}`, borderRadius: "6px", fontSize: "12px", color: missing ? C.amber800 : C.slate900, background: missing ? C.amber50 : C.blue50, fontWeight: "500", outline: "none", boxSizing: "border-box" }}
       />
@@ -131,24 +130,22 @@ export default function Review({ data, onExport, onReset }) {
 
       <div style={{ flex: 1, padding: "20px 24px", maxWidth: "900px", width: "100%", margin: "0 auto", boxSizing: "border-box" }}>
 
-        {/* Page header */}
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "16px" }}>
           <div>
             <div style={{ fontSize: "18px", fontWeight: "500", color: C.slate900 }}>Review extracted data</div>
-            <div style={{ fontSize: "12px", color: C.slate500, marginTop: "3px" }}>{po.source_file} — edit any field before exporting</div>
+            <div style={{ fontSize: "12px", color: C.slate500, marginTop: "3px" }}>{po.source_file} - edit any field before exporting</div>
           </div>
           <StatusBadge status={status} />
         </div>
 
-        {/* Issues panel */}
         {issues.length > 0 && (
-          <div style={{ display: "flex", gap: "10px", padding: "12px 14px", background: C.amber50, borderLeft: `3px solid #F59E0B`, borderRadius: "0 8px 8px 0", marginBottom: "14px" }}>
-            <span style={{ fontSize: "15px", flexShrink: 0, marginTop: "1px" }}>⚠</span>
+          <div style={{ display: "flex", gap: "10px", padding: "12px 14px", background: C.amber50, borderLeft: "3px solid #F59E0B", borderRadius: "0 8px 8px 0", marginBottom: "14px" }}>
+            <span style={{ fontSize: "15px", flexShrink: 0, marginTop: "1px" }}>!</span>
             <div>
               <div style={{ fontSize: "12px", color: C.amber800, fontWeight: "500" }}>{issues.length} field{issues.length > 1 ? "s" : ""} need attention before exporting</div>
               <div style={{ marginTop: "6px", display: "flex", flexDirection: "column", gap: "3px" }}>
                 {issues.slice(0, 5).map((iss, i) => (
-                  <div key={i} style={{ fontSize: "11px", color: C.amber800 }}>• {iss.message}</div>
+                  <div key={i} style={{ fontSize: "11px", color: C.amber800 }}>{"- "}{iss.message}</div>
                 ))}
                 {issues.length > 5 && <div style={{ fontSize: "11px", color: C.amber600 }}>+ {issues.length - 5} more</div>}
               </div>
@@ -156,8 +153,7 @@ export default function Review({ data, onExport, onReset }) {
           </div>
         )}
 
-        {/* HEADER */}
-        <SectionCard icon="🪪" title="Header">
+        <SectionCard title="Header">
           <div style={{ padding: "14px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", background: C.white }}>
             <Field label="Action" value={po.header?.action} onChange={v => updateHeader("action", v)} missing={!po.header?.action} />
             <Field label="Customer code" value={po.header?.customer_code} onChange={v => updateHeader("customer_code", v)} missing={!po.header?.customer_code} />
@@ -166,8 +162,7 @@ export default function Review({ data, onExport, onReset }) {
           </div>
         </SectionCard>
 
-        {/* PR */}
-        <SectionCard icon="🧾" title="PR — Purchase Request">
+        <SectionCard title="PR - Purchase Request">
           <div style={{ padding: "14px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", background: C.white }}>
             <Field label="Issue date" value={po.pr?.issue_date} onChange={v => updatePR("issue_date", v)} missing={!po.pr?.issue_date} />
             <Field label="Currency" value={po.pr?.currency} onChange={v => updatePR("currency", v)} missing={!po.pr?.currency} />
@@ -177,8 +172,7 @@ export default function Review({ data, onExport, onReset }) {
           </div>
         </SectionCard>
 
-        {/* SUPPLIERS */}
-        <SectionCard icon="🏭" title="Suppliers">
+        <SectionCard title="Suppliers">
           {(po.suppliers || []).map((sup, i) => (
             <div key={i}>
               {i > 0 && <div style={{ borderTop: `1px solid ${C.slate200}`, margin: "0 14px" }} />}
@@ -193,8 +187,7 @@ export default function Review({ data, onExport, onReset }) {
           ))}
         </SectionCard>
 
-        {/* SHIPMENTS */}
-        <SectionCard icon="🚢" title="Shipments">
+        <SectionCard title="Shipments">
           {(po.shipments || []).map((ship, i) => (
             <div key={i}>
               {i > 0 && <div style={{ borderTop: `1px solid ${C.slate200}`, margin: "0 14px" }} />}
@@ -210,8 +203,7 @@ export default function Review({ data, onExport, onReset }) {
           ))}
         </SectionCard>
 
-        {/* ITEMS */}
-        <SectionCard icon="📋" title={`Items — ${(po.items || []).length} lines`}>
+        <SectionCard title={`Items - ${(po.items || []).length} lines`}>
           <div style={{ overflowX: "auto" }}>
             <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "11px" }}>
               <thead>
@@ -242,9 +234,8 @@ export default function Review({ data, onExport, onReset }) {
           </div>
         </SectionCard>
 
-        {/* PREPACKS */}
         {po.prepacks && po.prepacks.length > 0 && (
-          <SectionCard icon="📦" title={`Prepacks — ${po.prepacks.length} pack${po.prepacks.length > 1 ? "s" : ""}`}>
+          <SectionCard title={`Prepacks - ${po.prepacks.length} pack${po.prepacks.length > 1 ? "s" : ""}`}>
             <div style={{ padding: "14px", background: C.white }}>
               {po.prepacks.map((pack, i) => (
                 <div key={i} style={{ marginBottom: i < po.prepacks.length - 1 ? "14px" : 0 }}>
@@ -252,7 +243,7 @@ export default function Review({ data, onExport, onReset }) {
                   <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
                     {(pack.details || []).map((d, j) => (
                       <div key={j} style={{ padding: "4px 10px", background: C.blue50, border: `1px solid ${C.blue100}`, borderRadius: "6px", fontSize: "11px", color: C.blue700, fontWeight: "500" }}>
-                        {d.size_id} {d.pack_color && `· ${d.pack_color}`}
+                        {d.size_id} {d.pack_color && `/ ${d.pack_color}`}
                       </div>
                     ))}
                   </div>
@@ -262,13 +253,12 @@ export default function Review({ data, onExport, onReset }) {
           </SectionCard>
         )}
 
-        {/* ACTIONS */}
         <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px", paddingTop: "16px", borderTop: `1px solid ${C.slate200}`, marginTop: "4px" }}>
           <button onClick={onReset} style={{ padding: "9px 18px", border: `1px solid ${C.slate300}`, borderRadius: "8px", fontSize: "13px", fontWeight: "500", color: C.slate700, background: C.white, display: "flex", alignItems: "center", gap: "6px", cursor: "pointer" }}>
-            ← Upload another
+            Upload another
           </button>
           <button onClick={() => onExport({ status, purchase_order: po, issues })} style={{ padding: "9px 22px", background: C.blue600, color: C.white, border: "none", borderRadius: "8px", fontSize: "13px", fontWeight: "500", display: "flex", alignItems: "center", gap: "6px", cursor: "pointer" }}>
-            ↓ Export JSON
+            Export JSON
           </button>
         </div>
 
