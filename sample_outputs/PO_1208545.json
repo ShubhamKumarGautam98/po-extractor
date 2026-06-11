@@ -1,7 +1,7 @@
 {
   "status": "needs_review",
   "purchase_order": {
-    "source_file": "unknown.pdf",
+    "source_file": "george_1208545.pdf",
     "header": {
       "action": "NEW",
       "customer_code": "GEORGE",
@@ -9,7 +9,7 @@
       "div_code": "KAE"
     },
     "pr": {
-      "issue_date": "",
+      "issue_date": "18 April 2026",
       "currency": "USD",
       "incoterm_code": "FOB",
       "incoterm_text": "FREE ON BOARD",
@@ -29,7 +29,7 @@
       {
         "item_id": "1",
         "supplier_id": "1",
-        "style_no": "1100269252",
+        "style_no": "5810-30338-4877-003",
         "shipment_id": "1208545",
         "country_of_origin": "CHN",
         "price": "7.43",
@@ -40,7 +40,7 @@
       {
         "item_id": "2",
         "supplier_id": "1",
-        "style_no": "1100269252",
+        "style_no": "5810-30338-4877-003",
         "shipment_id": "1208545",
         "country_of_origin": "CHN",
         "price": "7.43",
@@ -51,7 +51,7 @@
       {
         "item_id": "3",
         "supplier_id": "1",
-        "style_no": "1100269252",
+        "style_no": "5810-30338-4877-003",
         "shipment_id": "1208545",
         "country_of_origin": "CHN",
         "price": "7.43",
@@ -62,7 +62,7 @@
       {
         "item_id": "4",
         "supplier_id": "1",
-        "style_no": "1100269252",
+        "style_no": "5810-30338-4877-003",
         "shipment_id": "1208545",
         "country_of_origin": "CHN",
         "price": "7.43",
@@ -73,7 +73,7 @@
       {
         "item_id": "5",
         "supplier_id": "1",
-        "style_no": "1100269252",
+        "style_no": "5810-30338-4877-003",
         "shipment_id": "1208545",
         "country_of_origin": "CHN",
         "price": "7.43",
@@ -84,7 +84,7 @@
       {
         "item_id": "6",
         "supplier_id": "1",
-        "style_no": "1100269252",
+        "style_no": "5810-30338-4877-003",
         "shipment_id": "1208545",
         "country_of_origin": "CHN",
         "price": "7.43",
@@ -95,7 +95,7 @@
       {
         "item_id": "7",
         "supplier_id": "1",
-        "style_no": "1100269252",
+        "style_no": "5810-30338-4877-003",
         "shipment_id": "1208545",
         "country_of_origin": "CHN",
         "price": "7.43",
@@ -106,7 +106,7 @@
       {
         "item_id": "8",
         "supplier_id": "1",
-        "style_no": "1100269252",
+        "style_no": "5810-30338-4877-003",
         "shipment_id": "1208545",
         "country_of_origin": "CHN",
         "price": "7.43",
@@ -117,7 +117,7 @@
       {
         "item_id": "9",
         "supplier_id": "1",
-        "style_no": "1100269252",
+        "style_no": "5810-30338-4877-003",
         "shipment_id": "1208545",
         "country_of_origin": "CHN",
         "price": "7.43",
@@ -128,7 +128,7 @@
       {
         "item_id": "10",
         "supplier_id": "1",
-        "style_no": "1100269252",
+        "style_no": "5810-30338-4877-003",
         "shipment_id": "1208545",
         "country_of_origin": "CHN",
         "price": "7.43",
@@ -139,7 +139,7 @@
       {
         "item_id": "11",
         "supplier_id": "1",
-        "style_no": "1100269252",
+        "style_no": "5810-30338-4877-003",
         "shipment_id": "1208545",
         "country_of_origin": "CHN",
         "price": "7.43",
@@ -150,7 +150,7 @@
       {
         "item_id": "12",
         "supplier_id": "1",
-        "style_no": "1100269252",
+        "style_no": "5810-30338-4877-003",
         "shipment_id": "1208545",
         "country_of_origin": "CHN",
         "price": "7.43",
@@ -161,7 +161,7 @@
       {
         "item_id": "13",
         "supplier_id": "1",
-        "style_no": "1100269252",
+        "style_no": "5810-30338-4877-003",
         "shipment_id": "1208545",
         "country_of_origin": "CHN",
         "price": "7.43",
@@ -172,7 +172,7 @@
       {
         "item_id": "14",
         "supplier_id": "1",
-        "style_no": "1100269252",
+        "style_no": "5810-30338-4877-003",
         "shipment_id": "1208545",
         "country_of_origin": "CHN",
         "price": "7.43",
@@ -183,7 +183,7 @@
       {
         "item_id": "15",
         "supplier_id": "1",
-        "style_no": "1100269252",
+        "style_no": "5810-30338-4877-003",
         "shipment_id": "1208545",
         "country_of_origin": "CHN",
         "price": "7.43",
@@ -194,7 +194,7 @@
       {
         "item_id": "16",
         "supplier_id": "1",
-        "style_no": "1100269252",
+        "style_no": "5810-30338-4877-003",
         "shipment_id": "1208545",
         "country_of_origin": "CHN",
         "price": "7.43",
@@ -205,7 +205,7 @@
       {
         "item_id": "17",
         "supplier_id": "1",
-        "style_no": "1100269252",
+        "style_no": "5810-30338-4877-003",
         "shipment_id": "1208545",
         "country_of_origin": "CHN",
         "price": "7.43",
@@ -216,7 +216,7 @@
       {
         "item_id": "18",
         "supplier_id": "1",
-        "style_no": "1100269252",
+        "style_no": "5810-30338-4877-003",
         "shipment_id": "1208545",
         "country_of_origin": "CHN",
         "price": "7.43",
@@ -227,7 +227,7 @@
       {
         "item_id": "19",
         "supplier_id": "1",
-        "style_no": "1100269252",
+        "style_no": "5810-30338-4877-003",
         "shipment_id": "1208545",
         "country_of_origin": "CHN",
         "price": "7.43",
@@ -238,7 +238,7 @@
       {
         "item_id": "20",
         "supplier_id": "1",
-        "style_no": "1100269252",
+        "style_no": "5810-30338-4877-003",
         "shipment_id": "1208545",
         "country_of_origin": "CHN",
         "price": "7.43",
@@ -249,7 +249,7 @@
       {
         "item_id": "21",
         "supplier_id": "1",
-        "style_no": "1100269252",
+        "style_no": "5810-30338-4877-003",
         "shipment_id": "1208545",
         "country_of_origin": "CHN",
         "price": "7.43",
@@ -260,7 +260,7 @@
       {
         "item_id": "22",
         "supplier_id": "1",
-        "style_no": "1100269252",
+        "style_no": "5810-30338-4877-003",
         "shipment_id": "1208545",
         "country_of_origin": "CHN",
         "price": "7.43",
@@ -271,7 +271,7 @@
       {
         "item_id": "23",
         "supplier_id": "1",
-        "style_no": "1100269252",
+        "style_no": "5810-30338-4877-003",
         "shipment_id": "1208545",
         "country_of_origin": "CHN",
         "price": "7.43",
@@ -282,7 +282,7 @@
       {
         "item_id": "24",
         "supplier_id": "1",
-        "style_no": "1100269252",
+        "style_no": "5810-30338-4877-003",
         "shipment_id": "1208545",
         "country_of_origin": "CHN",
         "price": "7.43",
@@ -293,7 +293,7 @@
       {
         "item_id": "25",
         "supplier_id": "1",
-        "style_no": "1100269252",
+        "style_no": "5810-30338-4877-003",
         "shipment_id": "1208545",
         "country_of_origin": "CHN",
         "price": "7.43",
@@ -304,7 +304,7 @@
       {
         "item_id": "26",
         "supplier_id": "1",
-        "style_no": "1100269252",
+        "style_no": "5810-30338-4877-003",
         "shipment_id": "1208545",
         "country_of_origin": "CHN",
         "price": "7.43",
@@ -315,7 +315,7 @@
       {
         "item_id": "27",
         "supplier_id": "1",
-        "style_no": "1100269252",
+        "style_no": "5810-30338-4877-003",
         "shipment_id": "1208545",
         "country_of_origin": "CHN",
         "price": "7.43",
@@ -326,7 +326,7 @@
       {
         "item_id": "28",
         "supplier_id": "1",
-        "style_no": "1100269252",
+        "style_no": "5810-30338-4877-003",
         "shipment_id": "1208545",
         "country_of_origin": "CHN",
         "price": "7.43",
@@ -337,7 +337,7 @@
       {
         "item_id": "29",
         "supplier_id": "1",
-        "style_no": "1100269252",
+        "style_no": "5810-30338-4877-003",
         "shipment_id": "1208545",
         "country_of_origin": "CHN",
         "price": "7.43",
@@ -348,7 +348,7 @@
       {
         "item_id": "30",
         "supplier_id": "1",
-        "style_no": "1100269252",
+        "style_no": "5810-30338-4877-003",
         "shipment_id": "1208545",
         "country_of_origin": "CHN",
         "price": "7.43",
@@ -359,7 +359,7 @@
       {
         "item_id": "31",
         "supplier_id": "1",
-        "style_no": "1100269252",
+        "style_no": "5810-30338-4877-003",
         "shipment_id": "1208545",
         "country_of_origin": "CHN",
         "price": "7.43",
@@ -370,7 +370,7 @@
       {
         "item_id": "32",
         "supplier_id": "1",
-        "style_no": "1100269252",
+        "style_no": "5810-30338-4877-003",
         "shipment_id": "1208545",
         "country_of_origin": "CHN",
         "price": "7.43",
@@ -381,7 +381,7 @@
       {
         "item_id": "33",
         "supplier_id": "1",
-        "style_no": "1100269252",
+        "style_no": "5810-30338-4877-003",
         "shipment_id": "1208545",
         "country_of_origin": "CHN",
         "price": "7.43",

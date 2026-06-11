@@ -1,6 +1,6 @@
 const N8N_WEBHOOK_URL = '/webhook/po-extract';
 
-// ── Convert PDF file to base64 ──────────────────────────────────────────────
+// Convert PDF file to base64
 function fileToBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -10,7 +10,7 @@ function fileToBase64(file) {
   });
 }
 
-// ── Send PDF to n8n webhook for processing ──────────────────────────────────
+// Send PDF to n8n webhook for processing
 export async function extractPO(file) {
   try {
     const pdf_base64 = await fileToBase64(file);
@@ -29,6 +29,12 @@ export async function extractPO(file) {
     }
 
     const data = await response.json();
+
+    // Inject the real filename into the response
+    if (data.purchase_order) {
+      data.purchase_order.source_file = file.name;
+    }
+
     return data;
 
   } catch (error) {
@@ -46,7 +52,7 @@ export async function extractPO(file) {
   }
 }
 
-// ── Export final JSON as downloadable file ──────────────────────────────────
+// Export final JSON as downloadable file
 export function downloadJSON(data, filename) {
   const blob = new Blob(
     [JSON.stringify(data, null, 2)],

@@ -1,7 +1,7 @@
 {
   "status": "needs_review",
   "purchase_order": {
-    "source_file": "unknown.pdf",
+    "source_file": "george_1208546.pdf",
     "header": {
       "action": "NEW",
       "customer_code": "GEORGE",
@@ -9,7 +9,7 @@
       "div_code": "KAE"
     },
     "pr": {
-      "issue_date": "",
+      "issue_date": "18 April 2026",
       "currency": "USD",
       "incoterm_code": "FOB",
       "incoterm_text": "FREE ON BOARD",
@@ -32,10 +32,10 @@
         "style_no": "1100269252",
         "shipment_id": "1208546",
         "country_of_origin": "CHN",
-        "price": "7.42",
+        "price": "74.30",
         "factory_id": "FCTCN2",
         "color": "LILAC",
-        "size_id": "4-5Y"
+        "size_id": "10PC PREPACK"
       },
       {
         "item_id": "2",
@@ -46,7 +46,7 @@
         "price": "7.42",
         "factory_id": "FCTCN2",
         "color": "LILAC",
-        "size_id": "5-6Y"
+        "size_id": "4-5Y"
       },
       {
         "item_id": "3",
@@ -57,7 +57,7 @@
         "price": "7.42",
         "factory_id": "FCTCN2",
         "color": "LILAC",
-        "size_id": "6-7Y"
+        "size_id": "5-6Y"
       },
       {
         "item_id": "4",
@@ -68,7 +68,7 @@
         "price": "7.42",
         "factory_id": "FCTCN2",
         "color": "LILAC",
-        "size_id": "7-8Y"
+        "size_id": "6-7Y"
       },
       {
         "item_id": "5",
@@ -79,7 +79,7 @@
         "price": "7.42",
         "factory_id": "FCTCN2",
         "color": "LILAC",
-        "size_id": "8-9Y"
+        "size_id": "7-8Y"
       },
       {
         "item_id": "6",
@@ -90,7 +90,7 @@
         "price": "7.42",
         "factory_id": "FCTCN2",
         "color": "LILAC",
-        "size_id": "9-10Y"
+        "size_id": "8-9Y"
       },
       {
         "item_id": "7",
@@ -101,7 +101,7 @@
         "price": "7.42",
         "factory_id": "FCTCN2",
         "color": "LILAC",
-        "size_id": "10-11Y"
+        "size_id": "9-10Y"
       },
       {
         "item_id": "8",
@@ -112,7 +112,7 @@
         "price": "7.42",
         "factory_id": "FCTCN2",
         "color": "LILAC",
-        "size_id": "11-12Y"
+        "size_id": "10-11Y"
       },
       {
         "item_id": "9",
@@ -123,10 +123,21 @@
         "price": "7.42",
         "factory_id": "FCTCN2",
         "color": "LILAC",
-        "size_id": "12-13Y"
+        "size_id": "11-12Y"
       },
       {
         "item_id": "10",
+        "supplier_id": "1",
+        "style_no": "1100269252",
+        "shipment_id": "1208546",
+        "country_of_origin": "CHN",
+        "price": "7.42",
+        "factory_id": "FCTCN2",
+        "color": "LILAC",
+        "size_id": "12-13Y"
+      },
+      {
+        "item_id": "11",
         "supplier_id": "1",
         "style_no": "1100269252",
         "shipment_id": "1208546",
@@ -148,7 +159,58 @@
     "prepacks": [
       {
         "prepack_id": "1",
-        "details": []
+        "details": [
+          {
+            "id": "1",
+            "size_id": "",
+            "pack_color": "1"
+          },
+          {
+            "id": "2",
+            "size_id": "",
+            "pack_color": "1"
+          },
+          {
+            "id": "3",
+            "size_id": "",
+            "pack_color": "1"
+          },
+          {
+            "id": "4",
+            "size_id": "",
+            "pack_color": "1"
+          },
+          {
+            "id": "5",
+            "size_id": "",
+            "pack_color": "1"
+          },
+          {
+            "id": "6",
+            "size_id": "",
+            "pack_color": "1"
+          },
+          {
+            "id": "7",
+            "size_id": "",
+            "pack_color": "1"
+          },
+          {
+            "id": "8",
+            "size_id": "",
+            "pack_color": "1"
+          },
+          {
+            "id": "9",
+            "size_id": "",
+            "pack_color": "1"
+          },
+          {
+            "id": "10",
+            "size_id": "",
+            "pack_color": "1"
+          }
+        ]
       }
     ]
   },
