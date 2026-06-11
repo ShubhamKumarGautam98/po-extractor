@@ -61,10 +61,16 @@ Visit http://localhost:3001
 ### Upload Screen
 ![Upload Screen](screenshots/01_upload.png)
 
-### Review Screen — BrightKids PO 2450187
-![Review Screen](screenshots/03_review.png)
+### Loading Screen
+![Loading Screen](screenshots/02_loading.png)
 
----
+### Review Screen — BrightKids PO 2450187
+![Review Screen 1](screenshots/03_review%20(1).png)
+![Review Screen 2](screenshots/03_review%20(2).png)
+![Review Screen 3](screenshots/03_review%20(3).png)
+
+### n8n Workflow Pipeline
+![n8n Workflow](screenshots/n8n%20workflow%20view.png)
 
 ## Sample Outputs
 
