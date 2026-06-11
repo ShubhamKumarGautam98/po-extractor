@@ -41,7 +41,7 @@
           "parameters": [
             {
               "name": "x-api-key",
-              "value": "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"
+              "value": "YOUR API KEY"
             },
             {
               "name": "anthropic-version",
